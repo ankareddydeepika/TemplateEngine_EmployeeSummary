@@ -1,15 +1,16 @@
-// const Employee = require("./lib/Employee");
-// const Manager = require("./lib/Manager");
-// const Engineer = require("./lib/Engineer");
-// const Intern = require("./lib/Intern");
+const Employee = require("./lib/Employee");
+const Manager = require("./lib/Manager");
+const Engineer = require("./lib/Engineer");
+const Intern = require("./lib/Intern");
 const inquirer = require("inquirer");
-// const path = require("path");
-// const fs = require("fs");
-// ​
-// const OUTPUT_DIR = path.resolve(__dirname, "output")
-// const outputPath = path.join(OUTPUT_DIR, "team.html");
-// ​
-// const render = require("./lib/htmlRenderer");
+const path = require("path");
+const fs = require("fs");
+const OUTPUT_DIR = path.resolve(__dirname, "output")
+const outputPath = path.join(OUTPUT_DIR, "team.html");
+//
+const render = require("./lib/htmlRenderer");
+// Employees Array
+const employees = [];
 // Manager Questions
 const Managerqustions = inquirer.prompt([
     {
@@ -40,6 +41,9 @@ const Managerqustions = inquirer.prompt([
     }
 
 ]).then(function(data){
+
+    var managerDetails = new Manager(data.Managersname, data.Managersid, data.Managersemail, data.officeNumber);
+    employees.push(managerDetails);
 
   if(data.Teamdetails === "Yes")  {
     showEmployeeQuestions();
@@ -74,19 +78,19 @@ function showEmployeeQuestions(){
 
         if(data.EmployeeTitle === "Intern"){
 
-            showInternQuestions();
+            showInternQuestions(data);
 
         }
         else{
 
-            showEngineerQuestions();
+            showEngineerQuestions(data);
 
         }
     })
 };
 
 // Intern Questions
-function showInternQuestions(){
+function showInternQuestions(details){
     const InterQuestions = inquirer.prompt([
         {
             type: "input",
@@ -94,14 +98,17 @@ function showInternQuestions(){
             message: "Enter School name"
         }
     ]).then(function(data){
+
+        var internDetails = new Intern(details.name, details.id, details.email, data.School)
+        employees.push(internDetails)
+        addMoreEmployees()
     
-        console.log(data)
     })
     
 }
 
 // Engineer Questions
-function showEngineerQuestions(){
+function showEngineerQuestions(details){
     const EngineerQuestions = inquirer.prompt([
         {
             type: "input",
@@ -109,9 +116,46 @@ function showEngineerQuestions(){
             message: "Enter Github address"
         }
     ]).then(function(data){
+
+        var engineerDetails = new Engineer(details.name, details.id, details.email, data.GitHub)
+        employees.push(engineerDetails)
+        addMoreEmployees()
     
-        console.log(data)
     })
 }
+
+function addMoreEmployees(){
+    const MoreQuestions = inquirer.prompt([
+        {
+            type: "list",
+            name: "MoreEmployees",
+            message: "Do you want to add more employees?",
+            choices: ["Yes","No"]
+        }
+    ]).then(function(data){
+
+        if(data.MoreEmployees === "Yes"){
+
+            showEmployeeQuestions();
+        }
+
+    else{
+
+        var htmlPage = render(employees)
+
+        fs.mkdirSync(OUTPUT_DIR, { recursive: true })
+
+        fs.writeFile(outputPath, htmlPage, function(err){
+            if(err){
+                return console.log(err);
+            }
+    
+            console.log("Success!")
+        });
+
+    }
+    })
+}
+
 
 
