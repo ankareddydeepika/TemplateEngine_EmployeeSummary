@@ -48,6 +48,10 @@ const Managerqustions = inquirer.prompt([
   if(data.Teamdetails === "Yes")  {
     showEmployeeQuestions();
   }
+  else{
+    buildHtml();
+
+  }
 })
 // Common Questions for employee
 
@@ -141,20 +145,25 @@ function addMoreEmployees(){
 
     else{
 
-        var htmlPage = render(employees)
-
-        fs.mkdirSync(OUTPUT_DIR, { recursive: true })
-
-        fs.writeFile(outputPath, htmlPage, function(err){
-            if(err){
-                return console.log(err);
-            }
-    
-            console.log("Success!")
-        });
+        buildHtml();
 
     }
     })
+}
+
+function buildHtml(){
+    var htmlPage = render(employees)
+
+    fs.mkdirSync(OUTPUT_DIR, { recursive: true })
+
+    fs.writeFile(outputPath, htmlPage, function(err){
+        if(err){
+            return console.log(err);
+        }
+
+        console.log("Success!")
+    });
+
 }
 
 

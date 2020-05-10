@@ -12,10 +12,10 @@
     <script src="https://kit.fontawesome.com/c502137733.js"></script>
 </head>
 
-<body>
+<body style="background-color: gray;">
     <div class="container-fluid">
-        <div class="row">
-            <div class="col-12 jumbotron mb-3 team-heading">
+        <div class="row" id="myTeam">
+            <div class="col-12 jumbotron mb-3 team-heading" style="background-color: brown;">
                 <h1 class="text-center">My Team</h1>
             </div>
         </div>
@@ -23,7 +23,9 @@
     <div class="container">
         <div class="row">
             <div class="team-area col-12 d-flex justify-content-center">
-                {{ team }}
+                <div class="card-columns">
+                    {{ team }}
+                </div>
             </div>
         </div>
     </div>

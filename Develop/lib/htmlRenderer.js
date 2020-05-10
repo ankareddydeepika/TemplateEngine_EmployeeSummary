@@ -6,19 +6,30 @@ const templatesDir = path.resolve(__dirname, "../templates");
 const render = employees => {
   const html = [];
 
-  html.push(employees
-    .filter(employee => employee.getRole() === "Manager")
-    .map(manager => renderManager(manager))
-  );
-  html.push(employees
-    .filter(employee => employee.getRole() === "Engineer")
-    .map(engineer => renderEngineer(engineer))
-  );
-  html.push(employees
-    .filter(employee => employee.getRole() === "Intern")
-    .map(intern => renderIntern(intern))
-  );
+  let mamangers = employees
+               .filter(employee => employee.getRole() === "Manager")
+                .map(manager => renderManager(manager))
+   mamangers.forEach(function(item) {
+      html.push(item)
+   })
 
+   let engineers = employees
+   .filter(employee => employee.getRole() === "Engineer")
+   .map(engineer => renderEngineer(engineer))
+
+   engineers.forEach(function(item) {
+    html.push(item)
+ })
+
+ let interns = employees
+ .filter(employee => employee.getRole() === "Intern")
+ .map(intern => renderIntern(intern))
+
+ interns.forEach(function(item) {
+  html.push(item)
+})
+
+  
   return renderMain(html.join(""));
 
 };
